@@ -1,11 +1,11 @@
-# CRUD Learning WebApp Express+Rest+React+AntD
+# CRUD Learning WebApp Express+Rest+React
 
 ## ToDo
 
-- [] GET `/users` - return all data from `users.json` file
-- [] POST `/users` - add new user to `users.json` file
-- [] PUT `/users/1` - update user from `users.json` with id `1`
-- [] GET `/users/1` - return user from `users.json` with id `1`
+- [ ] GET `/users` - return all data from `users.json` file
+- [ ] POST `/users` - add new user to `users.json` file
+- [ ] PUT `/users/1` - update user from `users.json` with id `1`
+- [ ] GET `/users/1` - return user from `users.json` with id `1`
 
 ## Install and run
 
