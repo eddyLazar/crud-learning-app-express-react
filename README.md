@@ -7,7 +7,7 @@
 - [ ] PUT `/users/1` - update user from `users.json` with id `1`
 - [ ] GET `/users/1` - return user from `users.json` with id `1`
 
-## Install and run
+## Instal, run, test
 
 ```bash
 npm install
@@ -15,6 +15,10 @@ npm install
 
 ```bash
 npm run dev
+```
+
+```bash
+npm run test
 ```
 
 go to browser and open `http://localhost:5000`
