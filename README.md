@@ -6,6 +6,7 @@
 - [ ] POST `/users` - add new user to `users.json` file
 - [ ] PUT `/users/1` - update user from `users.json` with id `1`
 - [ ] GET `/users/1` - return user from `users.json` with id `1`
+- [ ] DELETE `/users/1` - delete user from `users.json` with id `1`
 
 ## Instal, run, test
 
