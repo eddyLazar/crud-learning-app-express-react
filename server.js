@@ -1,7 +1,11 @@
-const users = require("./db/users.json");
 const express = require("express");
 const fs = require("fs")
 const app = express();
+
+const getAllUsers = () => {
+  const jsonData = fs.readFileSync('./db/users.json')
+  return JSON.parse(jsonData)
+}
 
 const saveUser = (data) => {
   const stringifyData = JSON.stringify(data)
@@ -13,25 +17,30 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  res.json(users);
+  res.json(getAllUsers());
 });
 
 app.post("/users", (req, res) => {
-  const newUserId = users.length
-  users[newUserId] = req.body.user
+  const users = getAllUsers()
+  users.push(req.body)
+
   saveUser(users)
-  res.send(`user with id ${req.params.id - 1} has been updated`)
+
+  res.send("User have been created")
 });
 
 app.put("/users/:id", (req, res) => {
   const newUsers = users
-  newUsers[req.params.id - 1].name = req.body.name
+  newUsers[req.params.id - 1].name = req.body
   saveUser(newUsers)
   res.send(`user with id ${req.params.id - 1} has been updated`)
 });
 
 app.get("/users/:id", (req, res) => {
-  res.json(users[req.params.id - 1]);
+  const users = getAllUsers()
+  const user = users.filter(user => user.id === req.params.id)
+  console.log(user)
+  res.json(user);
 });
 
 module.exports = app;
