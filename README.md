@@ -2,10 +2,17 @@
 
 ## ToDo
 
-- [ ] GET `/users` - return all data from `users.json` file
-- [ ] POST `/users` - add new user to `users.json` file
-- [ ] PUT `/users/1` - update user from `users.json` with id `1`
-- [ ] GET `/users/1` - return user from `users.json` with id `1`
+- [x] GET `/users` - return all data from `users.json` file
+- [x] POST `/users` - add new user to `users.json` file
+  - [ ] create `id` - take largetst id from users and new id will be this number + 1
+- [x] PUT `/users/1` - update user from `users.json` with id `1`
+- [x] GET `/users/1` - return user from `users.json` with id `1`
+- [ ] DELETE  `/users/1` - deletes user from list
+  - [ ] create tests for delete
+
+### Refactoring
+- [] `UserDB` module
+- [] Validation
 
 ## Instal, run, test
 
