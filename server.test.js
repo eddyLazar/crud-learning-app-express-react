@@ -56,14 +56,14 @@ describe("Testing Endpoints", () => {
     newUserId = 1;
   });
 
-  test("GET: /users/{id}", async () => {
+  test.skip("GET: /users/{id}", async () => {
     const res = await request(app).get("/users/1");
     expect(res.statusCode).toEqual(200);
     const user = res.body;
     expect(user).toMatchObject(userMatchingObject);
   });
 
-  test("PUT: /users/{id}", async () => {
+  test.skip("PUT: /users/{id}", async () => {
     const newName = "some new name";
     const res = await request(app).put("/users/1").send({
       name: newName,
@@ -72,4 +72,11 @@ describe("Testing Endpoints", () => {
     const user = res.body;
     expect(user).toHaveProperty("name", newName);
   });
+
+  test.skip("DELETE: /users/{id}", async () => {
+    const res = await request(app).delete("/users/1");
+    expect(res.statusCode).toEqual(200);
+  })
 });
+
+
