@@ -9,6 +9,7 @@
 - [x] GET `/users/1` - return user from `users.json` with id `1`
 - [ ] DELETE  `/users/1` - deletes user from list
   - [ ] create tests for delete
+- [ ] user object should contain `age` calculated from `birthdate`
 
 ### Refactoring
 - [] `UserDB` module
