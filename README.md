@@ -11,7 +11,7 @@
     - [X] create tests for delete
 - [ ] user object should contain age calculated from birthdate
 
-Refactoring
+## Refactoring
 -[ ] UserDB module
 -[ ] Validation
 

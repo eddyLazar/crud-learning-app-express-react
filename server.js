@@ -22,10 +22,10 @@ app.post("/users", async (req, res) => {
   res.send(userData);
 });
 
-app.put("/users/:id", (req, res) => {
+app.put("/users/:id", async (req, res) => {
   const userId = parseInt(req.params.id);
   const newUserData = req.body;
-  const existUsers = getUserData();
+  const existUsers = await getUserData();
   const findExist = existUsers.findIndex(user => user.id === userId);
   if (findExist == -1) {
     return res.status(404).send({ error: true, msg: 'id not exist' });
@@ -35,13 +35,14 @@ app.put("/users/:id", (req, res) => {
     ...updateUser,
     ...newUserData
   }
+  existUsers[findExist] = updateUser
   saveUserData(existUsers);
   res.send(updateUser);
 });
 
-app.get("/users/:id", (req, res) => {
+app.get("/users/:id", async (req, res) => {
   const userId = parseInt(req.params.id);
-  const existUsers = getUserData();
+  const existUsers = await getUserData();
   const findExist = existUsers.find(user => user.id === userId);
   if (!findExist) {
     return res.status(409).send({ error: true, msg: 'user not exist' });
