@@ -16,8 +16,7 @@ app.get("/users", async (req, res) => {
 
 app.post("/users", async (req, res) => {
   const existUsers = await getUserData();
-  const userData = req.body;
-  userData.id = existUsers.length + 1;
+  const userData = { id: existUsers.length + 1, ...req.body };
   existUsers.push(userData);
   saveUserData(existUsers);
   res.send(userData);
@@ -50,15 +49,15 @@ app.get("/users/:id", (req, res) => {
   res.send(findExist);
 });
 
-app.delete("/users/:id", (req, res) => {
+app.delete("/users/:id", async (req, res) => {
   const userId = parseInt(req.params.id);
-  const existUsers = getUserData();
+  const existUsers = await getUserData();
   const filterUser = existUsers.filter(user => user.id !== userId);
   if (existUsers.length === filterUser.length) {
     return res.status(409).send({ error: true, msg: 'user does not exist' });
   }
   saveUserData(filterUser);
-  res.send({ success: true, msg: 'User removed successfully' });
+  res.status(200).send({ id: filterUser.indexOf(userId) });
 });
 
 const saveUserData = (data) => {
