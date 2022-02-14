@@ -1,74 +1,31 @@
 const express = require("express");
 const app = express();
-const fs = require("fs");
+const usersDB = require("./UserDB")
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
 
 app.get("/", (req, res) => {
   res.json({ hello: "world" });
 });
 
 app.get("/users", async (req, res) => {
-  const users = await getUserData();
-  res.send(users);
+  res.send(await usersDB.getAll());
 });
 
 app.post("/users", async (req, res) => {
-  const existUsers = await getUserData();
-  const userData = { id: existUsers.length + 1, ...req.body };
-  existUsers.push(userData);
-  saveUserData(existUsers);
-  res.send(userData);
+  res.send(await usersDB.post(req.body));
 });
 
 app.put("/users/:id", async (req, res) => {
-  const userId = parseInt(req.params.id);
-  const newUserData = req.body;
-  const existUsers = await getUserData();
-  const findExist = existUsers.findIndex(user => user.id === userId);
-  if (findExist == -1) {
-    return res.status(404).send({ error: true, msg: 'id not exist' });
-  }
-  let updateUser = existUsers[findExist];
-  updateUser = {
-    ...updateUser,
-    ...newUserData
-  }
-  existUsers[findExist] = updateUser
-  saveUserData(existUsers);
-  res.send(updateUser);
+  res.send(await usersDB.put(parseInt(req.params.id), req.body));
 });
 
 app.get("/users/:id", async (req, res) => {
-  const userId = parseInt(req.params.id);
-  const existUsers = await getUserData();
-  const findExist = existUsers.find(user => user.id === userId);
-  if (!findExist) {
-    return res.status(409).send({ error: true, msg: 'user not exist' });
-  }
-  res.send(findExist);
+  res.send(await usersDB.getById(parseInt(req.params.id)));
 });
 
 app.delete("/users/:id", async (req, res) => {
-  const userId = parseInt(req.params.id);
-  const existUsers = await getUserData();
-  const filterUser = existUsers.filter(user => user.id !== userId);
-  if (existUsers.length === filterUser.length) {
-    return res.status(409).send({ error: true, msg: 'user does not exist' });
-  }
-  saveUserData(filterUser);
-  res.status(200).send({ id: filterUser.indexOf(userId) });
+  res.send(await usersDB.delete(parseInt(req.params.id)));
 });
-
-const saveUserData = (data) => {
-  const stringifyData = JSON.stringify(data);
-  fs.writeFileSync('./db/users.json', stringifyData);
-};
-
-const getUserData = async () => {
-  const jsonData = await fs.promises.readFile('./db/users.json');
-  return JSON.parse(jsonData);
-};
 
 module.exports = app;

@@ -64,7 +64,7 @@ describe("Testing Endpoints", () => {
 
   test("PUT: /users/{id}", async () => {
     const newName = "some new name";
-    const res = await request(app).put("/users/1").send({
+    const res = await request(app).put("/users/11").send({
       name: newName,
     });
     expect(res.statusCode).toEqual(200);
@@ -74,7 +74,7 @@ describe("Testing Endpoints", () => {
 
   test("DELETE: /users/{id}", async () => {
     const res = await request(app).delete("/users/11");
-    //expect(res.statusCode).toEqual(200);
+    expect(res.statusCode).toEqual(200);
     const id = res.body
     expect(id).toEqual({ "id": -1 })
   })
