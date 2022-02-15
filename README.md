@@ -13,8 +13,8 @@
 
 ## Refactoring
 
--[ ] UserDB module
--[ ] Validation
+- [ ] UserDB module
+- [ ] Validation
 
 ## Instal, run, test
 

@@ -26,7 +26,7 @@ module.exports.put = async (userId, newUser) => {
     const existUsers = await getUserData();
     const findExist = existUsers.findIndex(user => user.id === userId);
     if (findExist == -1) {
-        return ({ error: true, msg: 'id not exist' });
+        return (404);
     };
     let updateUser = existUsers[findExist];
     updateUser = {
@@ -42,7 +42,7 @@ module.exports.getById = async (userId) => {
     const existUsers = await getUserData();
     const findExist = existUsers.find(user => user.id === userId);
     if (!findExist) {
-        return res.status(409).send({ error: true, msg: 'user not exist' });
+        return (404);
     };
     const age = calculateAge(findExist.birthdate);
     const userWithAge = {
@@ -56,8 +56,8 @@ module.exports.delete = async (userId) => {
     const existUsers = await getUserData();
     const filterUser = existUsers.filter(user => user.id !== userId);
     if (existUsers.length === filterUser.length) {
-        return ({ error: true, msg: 'user does not exist' });
-    }
+        return (404);
+    };
     saveUserData(filterUser);
     return ({ id: filterUser.indexOf(userId) });
 }
