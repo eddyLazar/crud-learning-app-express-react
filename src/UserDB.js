@@ -1,75 +1,74 @@
 const fs = require("fs");
 
-module.exports.getAll = async () => {
-    const users = await getUserData();
-    const usersWithAge = []
-    for (let user of users) {
-        const age = calculateAge(user.birthdate);
-        user = {
-            ...user,
-            age: age
+
+class UsersDb {
+    constructor(path = '') {
+        this.pathDB = path
+    }
+    async getAll() {
+        const users = await getJsonDataFromFile(this.pathDB)
+        users.map((user) => { user.age = calculateAge(user.birthdate) })
+        return users;
+    }
+    async getOne(userId = 0) {
+        const users = await getJsonDataFromFile(this.pathDB)
+        if (userId > users.length) return;
+        const user = users.find(user => user.id === userId)
+        user.age = calculateAge(user.birthdate)
+        return user;
+    }
+    async add(userData = {}) {
+        const users = await getJsonDataFromFile(this.pathDB)
+        let id = 1;
+        for (let user of users) {
+            if (user.id === id) {
+                id++;
+            }
+            else return;
         }
-        usersWithAge.push(user)
-    };
-    return usersWithAge
-};
-
-module.exports.post = async (newUser) => {
-    const existUsers = await getUserData();
-    const userData = { id: existUsers.length + 1, ...newUser };
-    existUsers.push(userData);
-    saveUserData(existUsers);
-    return (userData);
+        const user = { id: id, ...userData }
+        users.push(user);
+        saveUserData(this.pathDB, users);
+        return user;
+    }
+    async updateUser(userId = 0, userData = {}) {
+        const existUsers = await getJsonDataFromFile(this.pathDB);
+        const findExist = existUsers.findIndex(user => user.id === userId);
+        if (findExist == -1) {
+            return;
+        };
+        let updateUser = existUsers[findExist];
+        updateUser = {
+            ...updateUser,
+            ...userData
+        };
+        existUsers[findExist] = updateUser;
+        saveUserData(this.pathDB, existUsers);
+        return updateUser;
+    }
+    async deleteUser(userId = 0) {
+        const existUsers = await getJsonDataFromFile(this.pathDB);
+        const filterUser = existUsers.filter(user => user.id !== userId);
+        if (existUsers.length === filterUser.length) {
+            return;
+        };
+        saveUserData(this.pathDB, filterUser);
+        return ({ id: filterUser.indexOf(userId) });
+    }
 }
 
-module.exports.put = async (userId, newUser) => {
-    const existUsers = await getUserData();
-    const findExist = existUsers.findIndex(user => user.id === userId);
-    if (findExist == -1) {
-        return (404);
-    };
-    let updateUser = existUsers[findExist];
-    updateUser = {
-        ...updateUser,
-        ...newUser
-    };
-    existUsers[findExist] = updateUser;
-    saveUserData(existUsers);
-    return updateUser;
-}
-
-module.exports.getById = async (userId) => {
-    const existUsers = await getUserData();
-    const findExist = existUsers.find(user => user.id === userId);
-    if (!findExist) {
-        return (404);
-    };
-    const age = calculateAge(findExist.birthdate);
-    const userWithAge = {
-        ...findExist,
-        age: age
-    };
-    return userWithAge;
-}
-
-module.exports.delete = async (userId) => {
-    const existUsers = await getUserData();
-    const filterUser = existUsers.filter(user => user.id !== userId);
-    if (existUsers.length === filterUser.length) {
-        return (404);
-    };
-    saveUserData(filterUser);
-    return ({ id: filterUser.indexOf(userId) });
-}
-
-const saveUserData = (data) => {
+const saveUserData = (path, data) => {
     const stringifyData = JSON.stringify(data);
-    fs.writeFileSync('./db/users.json', stringifyData);
+    fs.writeFile(path, stringifyData, (error) => {
+        if (error) console.log('error', error)
+    });
 };
 
-const getUserData = async () => {
-    const jsonData = await fs.promises.readFile('./db/users.json');
-    return JSON.parse(jsonData);
+const getJsonDataFromFile = (path) => {
+    return fs.promises.readFile(path, (error) => {
+        if (error) console.log('error', error)
+    }).then(JSON.parse)
+    //TODO handle file read errors 
 };
 
 const calculateAge = (birthdate) => {
@@ -84,3 +83,5 @@ const calculateAge = (birthdate) => {
     };
     return age;
 };
+
+module.exports = UsersDb

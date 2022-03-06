@@ -1,9 +1,10 @@
 const express = require("express");
+const UsersDb = require("./UserDB");
 const app = express();
-const usersDB = require("./UserDB")
 
 app.use(express.json())
 
+const userDB = new UsersDb('./db/users.json')
 
 const errorHandler = (res, error) => {
   res.status(500).json({
@@ -22,7 +23,7 @@ app.get("/", (req, res) => {
 
 app.get("/users", async (req, res) => {
   try {
-    res.send(await usersDB.getAll());
+    res.send(await userDB.getAll());
   } catch (error) {
     errorHandler(res, error);
   };
@@ -30,23 +31,24 @@ app.get("/users", async (req, res) => {
 
 app.post("/users", async (req, res) => {
   try {
-    res.send(await usersDB.post(
+    res.send(await userDB.add(
       req.body));
   } catch (error) {
+    console.log(error)
     errorHandler(res, error);
   };
 });
 
 app.put("/users/:id", async (req, res) => {
   try {
-    const response = await usersDB.put(
+    const user = await userDB.updateUser(
       parseInt(req.params.id), req.body)
-    if (response === 404) {
-      res.status(404).send({
+    if (user === undefined) {
+      return res.status(404).send({
         message: 'User not exist'
-      });
+      })
     };
-    res.send(response);
+    res.send(user);
   } catch (error) {
     errorHandler(res, error);
   };
@@ -54,14 +56,14 @@ app.put("/users/:id", async (req, res) => {
 
 app.get("/users/:id", async (req, res) => {
   try {
-    const response = await usersDB.getById(
+    const user = await userDB.getOne(
       parseInt(req.params.id));
-    if (response === 404) {
-      res.status(404).send({
+    if (user === undefined) {
+      return res.status(404).send({
         message: 'User not exist'
-      });
-    }
-    res.status(200).send(response);
+      })
+    };
+    res.status(200).send(user);
   } catch (error) {
     errorHandler(res, error);
   };
@@ -69,10 +71,10 @@ app.get("/users/:id", async (req, res) => {
 
 app.delete("/users/:id", async (req, res) => {
   try {
-    const response = await usersDB.delete(
+    const response = await userDB.deleteUser(
       parseInt(req.params.id));
-    if (response === 404) {
-      res.status(404).send({
+    if (response === undefined) {
+      return res.status(404).send({
         message: 'User not exist'
       });
     };

@@ -1,6 +1,5 @@
 const request = require("supertest");
 const app = require("./server");
-// const { describe, expect, test } = require("@jest/globals");
 
 const userMatchingObject = expect.objectContaining({
   id: expect.any(Number),
@@ -10,7 +9,6 @@ const userMatchingObject = expect.objectContaining({
   birthdate: expect.any(String),
 });
 
-let newUserId;
 
 describe("Testing Endpoints", () => {
   test("GET: /", async () => {
