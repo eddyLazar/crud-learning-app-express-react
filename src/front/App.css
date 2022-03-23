@@ -1,0 +1,16 @@
+body {
+  background-color: blanchedalmond;
+}
+
+#app {
+  height: 100%;
+}
+
+.ant-layout {
+  display: flex;
+  height: 100%;
+}
+
+main {
+  background-color: white;
+}

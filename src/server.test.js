@@ -1,6 +1,5 @@
 const request = require("supertest");
 const app = require("./server");
-// const { describe, expect, test } = require("@jest/globals");
 
 const userMatchingObject = expect.objectContaining({
   id: expect.any(Number),
@@ -10,7 +9,6 @@ const userMatchingObject = expect.objectContaining({
   birthdate: expect.any(String),
 });
 
-let newUserId;
 
 describe("Testing Endpoints", () => {
   test("GET: /", async () => {
@@ -53,7 +51,6 @@ describe("Testing Endpoints", () => {
     const res = await request(app).post("/users").send(newUser);
     expect(res.statusCode).toEqual(200);
     expect(res.body).toMatchObject(newUser);
-    newUserId = 1;
   });
 
   test("GET: /users/{id}", async () => {
@@ -65,11 +62,20 @@ describe("Testing Endpoints", () => {
 
   test("PUT: /users/{id}", async () => {
     const newName = "some new name";
-    const res = await request(app).put("/users/1").send({
+    const res = await request(app).put("/users/11").send({
       name: newName,
     });
     expect(res.statusCode).toEqual(200);
     const user = res.body;
     expect(user).toHaveProperty("name", newName);
   });
+
+  test("DELETE: /users/{id}", async () => {
+    const res = await request(app).delete("/users/11");
+    expect(res.statusCode).toEqual(200);
+    const id = res.body
+    expect(id).toEqual({ "id": -1 })
+  })
 });
+
+
