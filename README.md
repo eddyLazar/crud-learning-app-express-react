@@ -39,6 +39,8 @@ go to browser and open `http://localhost:5000`
 npm run front
 ```
 
+go to browser and open `http://localhost:1234`
+
 ## Git branches Workflow
 
 when starting to work on task need to open new branch `feature/`
