@@ -5,12 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "front": "npx parcel src/index.html"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2"
+    "antd": "^4.19.3",
+    "express": "^4.17.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "uuid": "^8.3.2"
   },
   "jest": {
     "testEnvironment": "node",
@@ -20,11 +25,22 @@
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
+    "@types/react": "^17.0.42",
+    "@types/react-dom": "^17.0.14",
+    "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
     "eslint": "^8.7.0",
     "eslint-plugin-jest": "^26.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "events": "^3.3.0",
     "jest": "^27.4.7",
     "nodemon": "^2.0.15",
-    "supertest": "^6.2.2"
+    "parcel": "^2.4.0",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
+    "querystring-es3": "^0.2.1",
+    "stream-http": "^3.2.0",
+    "supertest": "^6.2.2",
+    "url": "^0.11.0"
   }
 }

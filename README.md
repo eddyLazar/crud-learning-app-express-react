@@ -10,11 +10,12 @@
 - [X] DELETE `/users/1` - delete user from `users.json` with id `1`
     - [X] create tests for delete
 - [X] user object should contain age calculated from birthdate
+- [] build frontend for manipulating users
 
 ## Refactoring
 
-- [ ] UserDB module
-- [ ] Validation
+- [x] UserDB module
+- [] Validation
 
 ## Instal, run, test
 
@@ -32,6 +33,11 @@ npm run test
 
 go to browser and open `http://localhost:5000`
 
+## Run frontend localy
+
+```bash
+npm run front
+```
 
 ## Git branches Workflow
 
